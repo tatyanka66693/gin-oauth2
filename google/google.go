@@ -69,6 +69,17 @@ func Setup(redirectURL, credFile string, scopes []string, secret []byte) {
 	}
 }
 
+func SetupWithCredentials(redirectURL string, credentials Credentials, scopes []string, secret []byte) {
+	store = sessions.NewCookieStore(secret)
+	conf = &oauth2.Config{
+		ClientID:     credentials.ClientID,
+		ClientSecret: credentials.ClientSecret,
+		RedirectURL:  redirectURL,
+		Scopes:       scopes,
+		Endpoint:     google.Endpoint,
+	}
+}
+
 func Session(name string) gin.HandlerFunc {
 	return sessions.Sessions(name, store)
 }
